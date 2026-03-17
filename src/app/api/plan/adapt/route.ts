@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { planId } = await request.json();
+    const { planId, freeText } = await request.json();
     if (!planId) {
       return NextResponse.json(
         { error: "Missing plan ID" },
@@ -44,7 +44,12 @@ export async function POST(request: NextRequest) {
 
     // Build context from database
     const context = await buildAdaptationContext(planId, user.id);
-    const prompt = buildAdaptationPrompt(context);
+    let prompt = buildAdaptationPrompt(context);
+
+    // Append free-text request if provided
+    if (freeText) {
+      prompt += `\n\nATHLETE REQUEST:\nThe athlete is asking you directly: "${freeText}"\nPlease adapt the plan according to this request.`;
+    }
 
     // Call Claude for adaptation
     const result = await generateWithClaude<AdaptationResult>(

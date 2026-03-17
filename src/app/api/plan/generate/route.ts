@@ -9,6 +9,7 @@ import { format, addDays } from "date-fns";
 
 interface GeneratedPlan {
   title: string;
+  rationale?: string;
   weeks: Array<{
     week_number: number;
     theme: string;
@@ -98,7 +99,7 @@ export async function POST(request: NextRequest) {
         target_date: targetDate || null,
         duration_weeks: durationWeeks,
         status: "active",
-        generation_context: body,
+        generation_context: { ...body, rationale: generatedPlan.rationale },
       })
       .select()
       .single();

@@ -13,7 +13,7 @@ ADAPTATION PRINCIPLES:
 8. Never sacrifice recovery for volume
 9. Consider the athlete's upcoming schedule and event date
 
-You MUST respond with valid JSON. Include a coach_note explaining your reasoning.`;
+You MUST respond with ONLY valid JSON. Do NOT wrap it in markdown code blocks. Start your response with { and end with }. Include a coach_note explaining your reasoning.`;
 
 export interface AdaptationContext {
   planTitle: string;

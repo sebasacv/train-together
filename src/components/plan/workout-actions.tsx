@@ -16,6 +16,7 @@ import {
   ThumbsDown,
   Frown,
   AlertTriangle,
+  ClipboardCheck,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -171,23 +172,35 @@ export function WorkoutActions({ workoutId, planId }: { workoutId: string; planI
 
   return (
     <div className="space-y-4">
-      {/* Complete Workout */}
+      {/* "How did it go?" — primary action within this component */}
       {!showLog ? (
-        <div className="flex gap-2">
-          <Button
+        <div className="space-y-2">
+          <button
             onClick={() => setShowLog(true)}
-            className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white font-semibold rounded-xl py-3 transition-colors"
           >
-            <CheckCircle2 className="w-4 h-4 mr-2" />
-            Complete Workout
-          </Button>
-          <Button
-            onClick={handleSkip}
-            variant="outline"
-            className="border-white/10"
-          >
-            <SkipForward className="w-4 h-4" />
-          </Button>
+            <ClipboardCheck className="w-5 h-5" />
+            Tell me how you did so I update your next activities
+          </button>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => setShowLog(true)}
+              size="sm"
+              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-sm"
+            >
+              <CheckCircle2 className="w-4 h-4 mr-1" />
+              Complete
+            </Button>
+            <Button
+              onClick={handleSkip}
+              variant="outline"
+              size="sm"
+              className="border-white/10 text-sm"
+            >
+              <SkipForward className="w-4 h-4 mr-1" />
+              Skip
+            </Button>
+          </div>
         </div>
       ) : (
         <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
@@ -279,18 +292,20 @@ export function WorkoutActions({ workoutId, planId }: { workoutId: string; planI
         <Button
           onClick={() => setShowFeedback(!showFeedback)}
           variant="outline"
-          className="flex-1 border-white/10"
+          size="sm"
+          className="flex-1 border-white/10 text-sm"
         >
-          <MessageCircle className="w-4 h-4 mr-2" />
+          <MessageCircle className="w-4 h-4 mr-1" />
           Give Feedback
         </Button>
         <Button
           onClick={handleAdaptPlan}
           disabled={adapting}
           variant="outline"
-          className="flex-1 border-white/10"
+          size="sm"
+          className="flex-1 border-white/10 text-sm"
         >
-          {adapting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Brain className="w-4 h-4 mr-2" />}
+          {adapting ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Brain className="w-4 h-4 mr-1" />}
           Adapt Plan
         </Button>
       </div>

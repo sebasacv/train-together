@@ -13,8 +13,11 @@ import {
   Clock,
   CheckCircle2,
   Plus,
+  Users,
+  UserPlus,
+  Heart,
 } from "lucide-react";
-import { format, isToday, startOfWeek, endOfWeek } from "date-fns";
+import { format, isToday, startOfWeek, endOfWeek, addDays } from "date-fns";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -59,6 +62,35 @@ export default async function DashboardPage() {
   const weekTotal = weekWorkouts?.length ?? 0;
   const weekCompleted = weekWorkouts?.filter(w => w.status === "completed").length ?? 0;
 
+  // Fetch friendships for "Who's Training Soon" and friend count
+  const { data: friendships } = await supabase
+    .from("friendships")
+    .select("user_a, user_b")
+    .or(`user_a.eq.${user.id},user_b.eq.${user.id}`);
+
+  const friendIds = (friendships ?? []).map((f: any) =>
+    f.user_a === user.id ? f.user_b : f.user_a
+  );
+  const friendCount = friendIds.length;
+
+  // Fetch friends' upcoming open workouts (next 3 days)
+  const threeDaysFromNow = format(addDays(new Date(), 3), "yyyy-MM-dd");
+  let friendWorkouts: any[] = [];
+
+  if (friendIds.length > 0) {
+    const { data } = await supabase
+      .from("workouts")
+      .select("id, title, scheduled_date, user_id, profiles!workouts_user_id_fkey(display_name)")
+      .in("user_id", friendIds)
+      .eq("is_open_for_joining", true)
+      .gte("scheduled_date", today)
+      .lte("scheduled_date", threeDaysFromNow)
+      .order("scheduled_date", { ascending: true })
+      .limit(5);
+
+    friendWorkouts = data ?? [];
+  }
+
   // Fetch recent activity
   const { data: recentActivity } = await supabase
     .from("activity_feed")
@@ -79,6 +111,17 @@ export default async function DashboardPage() {
   const displayName = profile?.display_name || "there";
   const streak = profile?.current_streak ?? 0;
 
+  // Calculate plan progress percentage based on weeks elapsed
+  let planProgress = 0;
+  if (activePlan) {
+    const startDate = new Date(activePlan.created_at);
+    const totalMs = activePlan.duration_weeks * 7 * 24 * 60 * 60 * 1000;
+    const elapsed = Date.now() - startDate.getTime();
+    if (totalMs > 0) {
+      planProgress = Math.min(100, Math.max(0, Math.round((elapsed / totalMs) * 100)));
+    }
+  }
+
   return (
     <div className="space-y-8">
       {/* Greeting */}
@@ -88,6 +131,30 @@ export default async function DashboardPage() {
           {format(new Date(), "EEEE, MMMM d")}
         </p>
       </div>
+
+      {/* Continue Your Plan */}
+      {activePlan && (
+        <Link href="/plan">
+          <div className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 border border-pink-500/20 rounded-2xl p-5 hover:from-pink-500/15 hover:via-purple-500/15 hover:to-cyan-500/15 transition-colors">
+            <div className="flex items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-slate-400 mb-1">Continue Your Plan</p>
+                <p className="font-semibold text-lg truncate">{activePlan.title}</p>
+                <div className="flex items-center gap-3 mt-2">
+                  <div className="flex-1 bg-white/10 rounded-full h-2">
+                    <div
+                      className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 h-2 rounded-full transition-all"
+                      style={{ width: `${planProgress}%` }}
+                    />
+                  </div>
+                  <span className="text-sm text-slate-400 whitespace-nowrap">{planProgress}%</span>
+                </div>
+              </div>
+              <ArrowRight className="w-5 h-5 text-slate-400 ml-4 shrink-0" />
+            </div>
+          </div>
+        </Link>
+      )}
 
       {/* Quick Stats Row */}
       <div className="grid grid-cols-3 gap-4">
@@ -191,6 +258,44 @@ export default async function DashboardPage() {
         </div>
       )}
 
+      {/* Who's Training Soon */}
+      <div className="space-y-3">
+        <h2 className="text-lg font-semibold flex items-center gap-2">
+          <Users className="w-5 h-5 text-cyan-400" />
+          Who&apos;s Training Soon
+        </h2>
+        {friendWorkouts.length > 0 ? (
+          <div className="space-y-2">
+            {friendWorkouts.map((workout) => {
+              const friendName =
+                (workout.profiles as { display_name: string } | null)?.display_name ?? "Friend";
+              return (
+                <Link key={workout.id} href="/calendar">
+                  <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium">{friendName}</p>
+                        <p className="text-sm text-slate-400 mt-0.5">{workout.title}</p>
+                        <p className="text-xs text-slate-500 mt-1">
+                          {format(new Date(workout.scheduled_date), "EEEE, MMM d")}
+                        </p>
+                      </div>
+                      <span className="text-xs text-cyan-400 font-medium flex items-center gap-1">
+                        Join <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+            <p className="text-sm text-slate-400">No friends training soon — invite someone!</p>
+          </div>
+        )}
+      </div>
+
       {/* No Plan CTA */}
       {!activePlan && (
         <div className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 border border-pink-500/20 rounded-2xl p-8 text-center space-y-4">
@@ -208,6 +313,27 @@ export default async function DashboardPage() {
             </Button>
           </Link>
         </div>
+      )}
+
+      {/* Connect with Friends Nudge */}
+      {friendCount < 3 && (
+        <Link href="/social/friends">
+          <div className="bg-gradient-to-r from-pink-500/10 to-orange-500/10 border border-pink-500/20 rounded-xl p-4 hover:from-pink-500/15 hover:to-orange-500/15 transition-colors">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center shrink-0">
+                <UserPlus className="w-5 h-5 text-pink-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium flex items-center gap-1.5">
+                  Training is better together
+                  <Heart className="w-4 h-4 text-pink-400" />
+                </p>
+                <p className="text-sm text-slate-400">Invite friends and train together!</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-slate-400 shrink-0" />
+            </div>
+          </div>
+        </Link>
       )}
 
       {/* Recent Activity */}

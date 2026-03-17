@@ -1,52 +1,133 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useEffect, useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSupabase } from "@/components/providers/supabase-provider";
 import { Button } from "@/components/ui/button";
-import { Dumbbell, Calendar, Clock, Target, Plus, ArrowRight, CheckCircle2 } from "lucide-react";
-import { format, differenceInWeeks } from "date-fns";
+import { Dumbbell, Calendar, Clock, Target, Plus, ArrowRight, CheckCircle2, Send, Loader2 } from "lucide-react";
+import { format } from "date-fns";
+import { toast } from "sonner";
 
-export default async function PlanPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+export default function PlanPage() {
+  const { supabase, user, loading: authLoading } = useSupabase();
+  const router = useRouter();
 
-  const { data: plans } = await supabase
-    .from("training_plans")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+  const [plans, setPlans] = useState<any[] | null>(null);
+  const [upcomingWorkouts, setUpcomingWorkouts] = useState<any[] | null>(null);
+  const [completedCount, setCompletedCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  const activePlan = plans?.find(p => p.status === "active");
+  const [chatInput, setChatInput] = useState("");
+  const [chatLoading, setChatLoading] = useState(false);
 
-  // Get upcoming workouts for active plan
-  let upcomingWorkouts = null;
-  if (activePlan) {
-    const { data } = await supabase
-      .from("workouts")
-      .select("*")
-      .eq("plan_id", activePlan.id)
-      .eq("status", "scheduled")
-      .gte("scheduled_date", format(new Date(), "yyyy-MM-dd"))
-      .order("scheduled_date", { ascending: true })
-      .limit(5);
-    upcomingWorkouts = data;
+  const activePlan = plans?.find(p => p.status === "active") ?? null;
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    async function fetchData() {
+      setLoading(true);
+
+      const { data: plansData } = await supabase
+        .from("training_plans")
+        .select("*")
+        .eq("user_id", user!.id)
+        .order("created_at", { ascending: false });
+
+      setPlans(plansData);
+
+      const active = plansData?.find(p => p.status === "active");
+
+      if (active) {
+        const { data: workouts } = await supabase
+          .from("workouts")
+          .select("*")
+          .eq("plan_id", active.id)
+          .eq("status", "scheduled")
+          .gte("scheduled_date", format(new Date(), "yyyy-MM-dd"))
+          .order("scheduled_date", { ascending: true })
+          .limit(5);
+        setUpcomingWorkouts(workouts);
+
+        const { count: completed } = await supabase
+          .from("workouts")
+          .select("*", { count: "exact", head: true })
+          .eq("plan_id", active.id)
+          .eq("status", "completed");
+        const { count: total } = await supabase
+          .from("workouts")
+          .select("*", { count: "exact", head: true })
+          .eq("plan_id", active.id);
+        setCompletedCount(completed ?? 0);
+        setTotalCount(total ?? 0);
+      }
+
+      setLoading(false);
+    }
+
+    fetchData();
+  }, [supabase, user, authLoading, router]);
+
+  async function handleChatSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!chatInput.trim() || !activePlan) return;
+
+    setChatLoading(true);
+    try {
+      const res = await fetch("/api/plan/adapt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ planId: activePlan.id, freeText: chatInput.trim() }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || "Failed to adapt plan");
+      }
+
+      const data = await res.json();
+      toast.success(data.message || "Plan updated by your AI coach!");
+      setChatInput("");
+
+      // Refresh data after adaptation
+      const { data: plansData } = await supabase
+        .from("training_plans")
+        .select("*")
+        .eq("user_id", user!.id)
+        .order("created_at", { ascending: false });
+      setPlans(plansData);
+
+      const active = plansData?.find(p => p.status === "active");
+      if (active) {
+        const { data: workouts } = await supabase
+          .from("workouts")
+          .select("*")
+          .eq("plan_id", active.id)
+          .eq("status", "scheduled")
+          .gte("scheduled_date", format(new Date(), "yyyy-MM-dd"))
+          .order("scheduled_date", { ascending: true })
+          .limit(5);
+        setUpcomingWorkouts(workouts);
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong");
+    } finally {
+      setChatLoading(false);
+    }
   }
 
-  // Get completion stats for active plan
-  let completedCount = 0;
-  let totalCount = 0;
-  if (activePlan) {
-    const { count: completed } = await supabase
-      .from("workouts")
-      .select("*", { count: "exact", head: true })
-      .eq("plan_id", activePlan.id)
-      .eq("status", "completed");
-    const { count: total } = await supabase
-      .from("workouts")
-      .select("*", { count: "exact", head: true })
-      .eq("plan_id", activePlan.id);
-    completedCount = completed ?? 0;
-    totalCount = total ?? 0;
+  if (authLoading || loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="w-6 h-6 animate-spin text-pink-400" />
+      </div>
+    );
   }
 
   return (
@@ -65,6 +146,29 @@ export default async function PlanPage() {
         <div className="space-y-6">
           {/* Active Plan Card */}
           <div className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 border border-pink-500/20 rounded-2xl p-6 space-y-4">
+            {/* Chat Input */}
+            <form onSubmit={handleChatSubmit} className="flex gap-2">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Ask your AI coach to change anything..."
+                disabled={chatLoading}
+                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={chatLoading || !chatInput.trim()}
+                className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 disabled:opacity-50 rounded-xl px-4 py-2.5 transition-all flex items-center justify-center"
+              >
+                {chatLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
+              </button>
+            </form>
+
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-xs text-pink-400 uppercase tracking-wider font-medium">Active Plan</p>
@@ -74,6 +178,18 @@ export default async function PlanPage() {
                 Active
               </span>
             </div>
+
+            {/* Why this plan? */}
+            {activePlan.generation_context?.rationale && (
+              <details className="group">
+                <summary className="text-sm text-pink-400 cursor-pointer hover:text-pink-300 transition-colors select-none">
+                  Why this plan?
+                </summary>
+                <p className="text-sm text-slate-400 mt-2 leading-relaxed">
+                  {activePlan.generation_context.rationale}
+                </p>
+              </details>
+            )}
 
             <div className="grid grid-cols-3 gap-4">
               <div className="flex items-center gap-2">

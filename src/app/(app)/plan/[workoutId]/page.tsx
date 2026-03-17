@@ -1,6 +1,10 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
+import { useSupabase } from "@/components/providers/supabase-provider";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
@@ -9,11 +13,11 @@ import {
   Target,
   Users,
   CheckCircle2,
-  MessageCircle,
-  Share2,
+  UserPlus,
   Dumbbell,
 } from "lucide-react";
 import { format } from "date-fns";
+import { toast } from "sonner";
 import { WorkoutActions } from "@/components/plan/workout-actions";
 
 interface Exercise {
@@ -25,41 +29,84 @@ interface Exercise {
   notes?: string;
 }
 
-export default async function WorkoutDetailPage({
-  params,
-}: {
-  params: Promise<{ workoutId: string }>;
-}) {
-  const { workoutId } = await params;
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+interface Participant {
+  id: string;
+  status: string;
+  profiles: {
+    display_name: string | null;
+    avatar_url: string | null;
+    current_level: string | null;
+  } | null;
+}
 
-  const { data: workout } = await supabase
-    .from("workouts")
-    .select("*")
-    .eq("id", workoutId)
-    .single();
+export default function WorkoutDetailPage() {
+  const { workoutId } = useParams<{ workoutId: string }>();
+  const router = useRouter();
+  const { supabase, user, loading: authLoading } = useSupabase();
 
-  if (!workout) redirect("/plan");
+  const [workout, setWorkout] = useState<any>(null);
+  const [participants, setParticipants] = useState<Participant[]>([]);
+  const [existingLog, setExistingLog] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Get participants
-  const { data: participants } = await supabase
-    .from("workout_participants")
-    .select("*, profiles!workout_participants_user_id_fkey(display_name, avatar_url, current_level)")
-    .eq("workout_id", workoutId)
-    .in("status", ["confirmed", "interested"]);
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.push("/login");
+      return;
+    }
 
-  // Check if already logged
-  const { data: existingLog } = await supabase
-    .from("workout_logs")
-    .select("id")
-    .eq("workout_id", workoutId)
-    .eq("user_id", user.id)
-    .single();
+    async function fetchData() {
+      const { data: w } = await supabase
+        .from("workouts")
+        .select("*")
+        .eq("id", workoutId)
+        .single();
+
+      if (!w) {
+        router.push("/plan");
+        return;
+      }
+      setWorkout(w);
+
+      const { data: parts } = await supabase
+        .from("workout_participants")
+        .select("*, profiles!workout_participants_user_id_fkey(display_name, avatar_url, current_level)")
+        .eq("workout_id", workoutId)
+        .in("status", ["confirmed", "interested"]);
+
+      setParticipants((parts as Participant[]) ?? []);
+
+      const { data: log } = await supabase
+        .from("workout_logs")
+        .select("id")
+        .eq("workout_id", workoutId)
+        .eq("user_id", user!.id)
+        .single();
+
+      setExistingLog(log);
+      setLoading(false);
+    }
+
+    fetchData();
+  }, [authLoading, user, workoutId, supabase, router]);
+
+  function handleInvite() {
+    const url = `${window.location.origin}/plan/${workoutId}`;
+    navigator.clipboard.writeText(url);
+    toast("Workout link copied! Share it with friends");
+  }
+
+  if (loading || authLoading || !workout) {
+    return (
+      <div className="max-w-2xl mx-auto py-12 text-center text-slate-400">
+        Loading...
+      </div>
+    );
+  }
 
   const exercises = (workout.exercises ?? []) as Exercise[];
-  const isOwner = workout.user_id === user.id;
+  const isOwner = workout.user_id === user?.id;
   const isCompleted = workout.status === "completed" || !!existingLog;
 
   const intensityColors: Record<string, string> = {
@@ -128,6 +175,45 @@ export default async function WorkoutDetailPage({
         </div>
       )}
 
+      {/* Who's Joining — always visible */}
+      <div className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-3">
+        <h3 className="font-semibold flex items-center gap-2">
+          <Users className="w-4 h-4 text-emerald-400" />
+          Who&apos;s Joining {participants.length > 0 && `(${participants.length})`}
+        </h3>
+        {participants.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {participants.map((p) => {
+              const profile = p.profiles as any;
+              return (
+                <div key={p.id} className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1.5">
+                  <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs font-medium">
+                    {profile?.display_name?.[0] ?? "?"}
+                  </div>
+                  <span className="text-sm">{profile?.display_name}</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                    p.status === "confirmed" ? "bg-emerald-500/20 text-emerald-300" : "bg-amber-500/20 text-amber-300"
+                  }`}>
+                    {p.status}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-center py-2">
+            <p className="text-sm text-slate-400 mb-3">No one yet — invite a friend!</p>
+            <button
+              onClick={handleInvite}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white text-sm font-semibold rounded-xl transition-colors"
+            >
+              <UserPlus className="w-4 h-4" />
+              Invite a Friend
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* Exercises */}
       {exercises.length > 0 && (
         <div className="space-y-3">
@@ -159,33 +245,14 @@ export default async function WorkoutDetailPage({
         </div>
       )}
 
-      {/* Participants */}
-      {participants && participants.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="font-semibold flex items-center gap-2">
-            <Users className="w-4 h-4 text-emerald-400" />
-            People Joining ({participants.length})
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {participants.map((p) => {
-              const profile = p.profiles as any;
-              return (
-                <div key={p.id} className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1.5">
-                  <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs font-medium">
-                    {profile?.display_name?.[0] ?? "?"}
-                  </div>
-                  <span className="text-sm">{profile?.display_name}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                    p.status === "confirmed" ? "bg-emerald-500/20 text-emerald-300" : "bg-amber-500/20 text-amber-300"
-                  }`}>
-                    {p.status}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      {/* Invite Friends — primary CTA */}
+      <button
+        onClick={handleInvite}
+        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white font-semibold rounded-xl py-3 transition-colors"
+      >
+        <UserPlus className="w-5 h-5" />
+        Invite Friends to Join
+      </button>
 
       {/* Actions */}
       {isOwner && !isCompleted && (

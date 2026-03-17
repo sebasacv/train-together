@@ -55,6 +55,7 @@ IMPORTANT: Only generate workouts for the first 4 weeks in detail. For plans lon
 Respond with ONLY raw JSON (no markdown, no code blocks). Use this exact format:
 {
   "title": "string - descriptive plan title",
+  "rationale": "string - 2-3 sentences explaining WHY this specific plan structure was chosen (periodization approach, key decisions, what makes it right for this athlete)",
   "weeks": [
     {
       "week_number": 1,

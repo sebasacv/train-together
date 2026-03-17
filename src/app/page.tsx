@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Dumbbell, Users, Brain, Trophy, ArrowRight, Calendar, Zap } from "lucide-react";
+import { Dumbbell, Users, Brain, Trophy, ArrowRight, Calendar, Zap, Heart } from "lucide-react";
 import Link from "next/link";
 
 export default function LandingPage() {
@@ -45,9 +45,14 @@ export default function LandingPage() {
           </h1>
 
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-            AI-generated training plans that adapt to you. Share your calendar,
-            train with friends, and build the habits that stick.
+            Exercise is more fun when shared. AI-powered plans that adapt to you,
+            friends who keep you accountable, and workouts you actually look forward to.
           </p>
+
+          <div className="inline-flex items-center gap-2 text-sm text-pink-300/70">
+            <Heart className="w-4 h-4" />
+            <span>Join thousands training together</span>
+          </div>
 
           <div className="flex items-center justify-center gap-4">
             <Link href="/signup">
@@ -62,6 +67,12 @@ export default function LandingPage() {
         {/* Feature Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-32 max-w-6xl mx-auto">
           <FeatureCard
+            icon={<Users className="w-6 h-6" />}
+            title="Train with Friends"
+            description="Exercise is more fun when shared. Invite friends, join their sessions, and never train alone again."
+            color="emerald"
+          />
+          <FeatureCard
             icon={<Brain className="w-6 h-6" />}
             title="AI-Powered Plans"
             description="Tell us your goal — Ironman, marathon, or just getting fit. Our AI builds a complete periodized plan."
@@ -70,14 +81,8 @@ export default function LandingPage() {
           <FeatureCard
             icon={<Zap className="w-6 h-6" />}
             title="Adaptive Training"
-            description="Feeling sore? Too easy? Your plan adapts in real-time based on how you feel."
+            description="Feeling sore? Too easy? Just tell your AI coach and your plan adapts instantly."
             color="amber"
-          />
-          <FeatureCard
-            icon={<Users className="w-6 h-6" />}
-            title="Train with Friends"
-            description="Share your training calendar. Friends can join your workouts. Build accountability together."
-            color="emerald"
           />
           <FeatureCard
             icon={<Trophy className="w-6 h-6" />}

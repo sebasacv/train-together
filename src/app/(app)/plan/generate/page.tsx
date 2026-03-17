@@ -16,7 +16,7 @@ import {
   Brain,
   CheckCircle2,
 } from "lucide-react";
-import { format, addWeeks } from "date-fns";
+import { format, addWeeks, differenceInWeeks } from "date-fns";
 
 const OBJECTIVES = [
   { value: "ironman", label: "Ironman", description: "Full distance triathlon (3.8km swim, 180km bike, 42.2km run)", icon: "🏊" },
@@ -203,7 +203,11 @@ export default function GeneratePlanPage() {
                   min={4}
                   max={52}
                   value={durationWeeks}
-                  onChange={(e) => setDurationWeeks(Number(e.target.value))}
+                  onChange={(e) => {
+                    const weeks = Number(e.target.value);
+                    setDurationWeeks(weeks);
+                    setTargetDate(format(addWeeks(new Date(), weeks), "yyyy-MM-dd"));
+                  }}
                   className="flex-1 accent-pink-500"
                 />
                 <span className="text-xl font-bold w-16 text-right">{durationWeeks}w</span>
@@ -213,11 +217,18 @@ export default function GeneratePlanPage() {
               </p>
             </div>
             <div>
-              <label className="text-sm text-slate-400 mb-2 block">Target event date (optional)</label>
+              <label className="text-sm text-slate-400 mb-2 block">Target event date</label>
               <input
                 type="date"
                 value={targetDate}
-                onChange={(e) => setTargetDate(e.target.value)}
+                onChange={(e) => {
+                  const date = e.target.value;
+                  setTargetDate(date);
+                  if (date) {
+                    const weeks = Math.max(4, differenceInWeeks(new Date(date), new Date()));
+                    setDurationWeeks(Math.min(52, weeks));
+                  }
+                }}
                 className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
             </div>
