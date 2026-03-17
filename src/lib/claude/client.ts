@@ -15,7 +15,7 @@ export async function generateWithClaude<T>(
   }
 ): Promise<T> {
   const response = await anthropic.messages.create({
-    model: options?.model ?? "claude-sonnet-4-5-20250514",
+    model: options?.model ?? "claude-sonnet-4-6",
     max_tokens: options?.maxTokens ?? 8192,
     system: systemPrompt,
     messages: [{ role: "user", content: userMessage }],

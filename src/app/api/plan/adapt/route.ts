@@ -52,8 +52,8 @@ export async function POST(request: NextRequest) {
       prompt,
       {
         model: context.unprocessedFeedback.length <= 1
-          ? "claude-haiku-4-5-20250514"
-          : "claude-sonnet-4-5-20250514",
+          ? "claude-haiku-4-5-20251001"
+          : "claude-sonnet-4-6",
         maxTokens: 4096,
       }
     );

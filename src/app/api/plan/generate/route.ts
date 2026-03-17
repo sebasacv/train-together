@@ -204,10 +204,13 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ planId: plan.id });
-  } catch (error) {
-    console.error("Plan generation error:", error);
+  } catch (error: any) {
+    console.error("Plan generation error:", error?.message || error);
+    const message = error?.status === 401
+      ? "API key issue. Check ANTHROPIC_API_KEY."
+      : error?.message || "Failed to generate plan. Please try again.";
     return NextResponse.json(
-      { error: "Failed to generate plan. Please try again." },
+      { error: message },
       { status: 500 }
     );
   }
