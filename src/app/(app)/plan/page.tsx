@@ -92,7 +92,7 @@ export default function PlanPage() {
       }
 
       const data = await res.json();
-      toast.success(data.message || "Plan updated by your AI coach!");
+      toast.success(data.coach_note || "Plan updated by your AI coach!", { duration: 8000 });
       setChatInput("");
 
       // Refresh data after adaptation

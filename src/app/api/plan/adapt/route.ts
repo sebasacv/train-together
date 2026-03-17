@@ -17,6 +17,8 @@ interface AdaptationResult {
       duration_minutes?: number | null;
       intensity?: string | null;
       exercises?: unknown[] | null;
+      scheduled_date?: string | null;
+      workout_type?: string | null;
       status?: string | null;
     };
     reason: string;
@@ -51,14 +53,13 @@ export async function POST(request: NextRequest) {
       prompt += `\n\nATHLETE REQUEST:\nThe athlete is asking you directly: "${freeText}"\nPlease adapt the plan according to this request.`;
     }
 
-    // Call Claude for adaptation
+    // Call Claude for adaptation — use Sonnet for free-text requests (need better reasoning)
+    const useSonnet = !!freeText || context.unprocessedFeedback.length > 1;
     const result = await generateWithClaude<AdaptationResult>(
       PLAN_ADAPTATION_SYSTEM_PROMPT,
       prompt,
       {
-        model: context.unprocessedFeedback.length <= 1
-          ? "claude-haiku-4-5-20251001"
-          : "claude-sonnet-4-6",
+        model: useSonnet ? "claude-sonnet-4-6" : "claude-haiku-4-5-20251001",
         maxTokens: 4096,
       }
     );
@@ -72,6 +73,8 @@ export async function POST(request: NextRequest) {
       if (adaptation.changes.duration_minutes) updates.duration_minutes = adaptation.changes.duration_minutes;
       if (adaptation.changes.intensity) updates.intensity = adaptation.changes.intensity;
       if (adaptation.changes.exercises) updates.exercises = adaptation.changes.exercises;
+      if (adaptation.changes.scheduled_date) updates.scheduled_date = adaptation.changes.scheduled_date;
+      if (adaptation.changes.workout_type) updates.workout_type = adaptation.changes.workout_type;
       if (adaptation.changes.status) updates.status = adaptation.changes.status;
       else updates.status = "adapted";
 

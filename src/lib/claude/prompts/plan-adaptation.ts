@@ -13,6 +13,8 @@ ADAPTATION PRINCIPLES:
 8. Never sacrifice recovery for volume
 9. Consider the athlete's upcoming schedule and event date
 
+CRITICAL: When the athlete makes a DIRECT REQUEST (e.g., "move my swim to Friday", "I want to swim 800m", "make Wednesday a rest day"), you MUST follow their request exactly. Direct requests override your coaching judgment. Always make at least one adaptation when the athlete asks for a change.
+
 You MUST respond with ONLY valid JSON. Do NOT wrap it in markdown code blocks. Start your response with { and end with }. Include a coach_note explaining your reasoning.`;
 
 export interface AdaptationContext {
@@ -83,6 +85,8 @@ Respond with JSON:
         "duration_minutes": "number | null - new duration if changed",
         "intensity": "string | null - new intensity if changed",
         "exercises": "array | null - new exercises array if changed",
+        "scheduled_date": "string | null - new YYYY-MM-DD date if workout needs to move to a different day",
+        "workout_type": "string | null - new type if changed (run, swim, bike, strength, yoga, rest, cross_train, brick)",
         "status": "string | null - set to 'adapted' if significantly changed"
       },
       "reason": "string - brief reason for this specific change"
