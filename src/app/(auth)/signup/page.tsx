@@ -1,13 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Dumbbell, Mail, Lock, User, ArrowRight, Check } from "lucide-react";
+import { Dumbbell, Mail, Lock, User, ArrowRight, Check, Users } from "lucide-react";
 
 export default function SignupPage() {
+  return (
+    <Suspense>
+      <SignupForm />
+    </Suspense>
+  );
+}
+
+function SignupForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -16,6 +24,8 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const inviteCode = searchParams.get("invite");
   const supabase = createClient();
 
   async function handleSignup(e: React.FormEvent) {
@@ -27,7 +37,7 @@ export default function SignupPage() {
       email,
       password,
       options: {
-        data: { username, full_name: fullName },
+        data: { username, full_name: fullName, invite_code: inviteCode || undefined },
         emailRedirectTo: `${window.location.origin}/callback`,
       },
     });
@@ -69,6 +79,12 @@ export default function SignupPage() {
         </div>
         <h1 className="text-3xl font-bold text-white">Create your account</h1>
         <p className="text-slate-400">Start training smarter, together</p>
+        {inviteCode && (
+          <div className="inline-flex items-center gap-2 bg-pink-500/10 border border-pink-500/20 rounded-full px-4 py-1.5 text-sm text-pink-300">
+            <Users className="w-3.5 h-3.5" />
+            A friend invited you to train together!
+          </div>
+        )}
       </div>
 
       <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-8 space-y-6">

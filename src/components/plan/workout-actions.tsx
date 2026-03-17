@@ -115,8 +115,22 @@ export function WorkoutActions({ workoutId, planId }: { workoutId: string; planI
       visibility: "friends",
     });
 
-    toast.success("Workout completed! +50 XP");
+    toast.success("Workout completed! +50 XP — updating your plan...");
     setLoading(false);
+
+    // Auto-adapt plan based on workout data
+    try {
+      const adaptRes = await fetch("/api/plan/adapt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ planId }),
+      });
+      const adaptData = await adaptRes.json();
+      if (adaptRes.ok && adaptData.coach_note) {
+        toast.success(adaptData.coach_note, { duration: 6000 });
+      }
+    } catch {}
+
     router.refresh();
   }
 
@@ -142,11 +156,26 @@ export function WorkoutActions({ workoutId, planId }: { workoutId: string; planI
       details: feedbackDetails || null,
     });
 
-    toast.success("Feedback recorded!");
+    toast.success("Feedback recorded — updating your plan...");
     setShowFeedback(false);
     setFeedbackType("");
     setFeedbackDetails("");
+
+    // Auto-adapt plan based on feedback
+    try {
+      const adaptRes = await fetch("/api/plan/adapt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ planId }),
+      });
+      const adaptData = await adaptRes.json();
+      if (adaptRes.ok && adaptData.coach_note) {
+        toast.success(adaptData.coach_note, { duration: 6000 });
+      }
+    } catch {}
+
     setLoading(false);
+    router.refresh();
   }
 
   async function handleAdaptPlan() {

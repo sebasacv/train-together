@@ -47,6 +47,7 @@ export default function WorkoutDetailPage() {
   const [workout, setWorkout] = useState<any>(null);
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [existingLog, setExistingLog] = useState<any>(null);
+  const [inviteCode, setInviteCode] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -85,6 +86,26 @@ export default function WorkoutDetailPage() {
         .single();
 
       setExistingLog(log);
+
+      // Fetch or create invite code for share link
+      const { data: codes } = await supabase
+        .from("invite_codes")
+        .select("code")
+        .eq("user_id", user!.id)
+        .gt("uses_remaining", 0)
+        .limit(1);
+
+      if (codes && codes.length > 0) {
+        setInviteCode(codes[0].code);
+      } else {
+        const { data: newCode } = await supabase
+          .from("invite_codes")
+          .insert({ user_id: user!.id })
+          .select("code")
+          .single();
+        if (newCode) setInviteCode(newCode.code);
+      }
+
       setLoading(false);
     }
 
@@ -92,9 +113,10 @@ export default function WorkoutDetailPage() {
   }, [authLoading, user, workoutId, supabase, router]);
 
   function handleInvite() {
-    const url = `${window.location.origin}/plan/${workoutId}`;
+    const base = `${window.location.origin}/plan/${workoutId}`;
+    const url = inviteCode ? `${window.location.origin}/signup?invite=${inviteCode}&workout=${workoutId}` : base;
     navigator.clipboard.writeText(url);
-    toast("Workout link copied! Share it with friends");
+    toast.success("Invite link copied! New friends will auto-connect with you");
   }
 
   if (loading || authLoading || !workout) {

@@ -31,6 +31,7 @@ const NOTIFICATION_ICONS: Record<string, React.ReactNode> = {
   plan_adapted: <Brain className="w-4 h-4 text-purple-400" />,
   leaderboard_change: <Trophy className="w-4 h-4 text-amber-400" />,
   message_received: <MessageCircle className="w-4 h-4 text-blue-400" />,
+  friend_matching_workout: <Users className="w-4 h-4 text-cyan-400" />,
 };
 
 export default function NotificationsPage() {

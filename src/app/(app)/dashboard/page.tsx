@@ -91,6 +91,50 @@ export default async function DashboardPage() {
     friendWorkouts = data ?? [];
   }
 
+  // Generate smart match notifications (fire-and-forget, don't block page load)
+  // Match user's upcoming workouts with friends' workouts by type+date
+  if (friendIds.length > 0) {
+    const myUpcoming = await supabase
+      .from("workouts")
+      .select("id, workout_type, scheduled_date")
+      .eq("user_id", user.id)
+      .eq("status", "scheduled")
+      .gte("scheduled_date", today)
+      .lte("scheduled_date", threeDaysFromNow);
+
+    const workoutTypeLabels: Record<string, string> = {
+      run: "running", swim: "swimming", bike: "cycling", strength: "doing strength training",
+      yoga: "doing yoga", cross_train: "cross-training", brick: "doing a brick workout",
+    };
+
+    for (const mine of myUpcoming.data ?? []) {
+      for (const theirs of friendWorkouts) {
+        if (mine.workout_type === (theirs as any).workout_type && mine.scheduled_date === (theirs as any).scheduled_date) {
+          const friendName = ((theirs as any).profiles as any)?.display_name || "A friend";
+          const activity = workoutTypeLabels[mine.workout_type] || "training";
+          const notifKey = `match_${mine.id}_${(theirs as any).id}`;
+
+          const { data: existing } = await supabase
+            .from("notifications")
+            .select("id")
+            .eq("user_id", user.id)
+            .eq("type", "friend_matching_workout")
+            .like("body", `%${notifKey}%`)
+            .limit(1);
+
+          if (!existing || existing.length === 0) {
+            await supabase.from("notifications").insert({
+              user_id: user.id,
+              type: "friend_matching_workout",
+              title: `${friendName} is ${activity} today`,
+              body: `Join them to meet this week's ${mine.workout_type} goal and catch up! [${notifKey}]`,
+            });
+          }
+        }
+      }
+    }
+  }
+
   // Fetch recent activity
   const { data: recentActivity } = await supabase
     .from("activity_feed")
