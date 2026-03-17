@@ -26,12 +26,23 @@ export async function generateWithClaude<T>(
     throw new Error("No text response from Claude");
   }
 
-  // Extract JSON from the response (handles markdown code blocks)
-  let jsonStr = textBlock.text;
-  const jsonMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
+  // Extract JSON from the response (handles markdown code blocks and preamble)
+  let jsonStr = textBlock.text.trim();
+
+  // Try to extract from markdown code blocks
+  const jsonMatch = jsonStr.match(/```(?:json)?\s*\n?([\s\S]*?)\n?```/);
   if (jsonMatch) {
-    jsonStr = jsonMatch[1];
+    jsonStr = jsonMatch[1].trim();
   }
 
-  return JSON.parse(jsonStr.trim()) as T;
+  // If still not valid JSON, try to find the first { and last }
+  if (!jsonStr.startsWith("{") && !jsonStr.startsWith("[")) {
+    const firstBrace = jsonStr.indexOf("{");
+    const lastBrace = jsonStr.lastIndexOf("}");
+    if (firstBrace !== -1 && lastBrace !== -1) {
+      jsonStr = jsonStr.slice(firstBrace, lastBrace + 1);
+    }
+  }
+
+  return JSON.parse(jsonStr) as T;
 }

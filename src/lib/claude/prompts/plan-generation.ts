@@ -20,7 +20,7 @@ SAFETY:
 - Flag exercises that require proper form instruction
 - Consider stated injuries/limitations
 
-You MUST respond with valid JSON matching the exact schema specified in the user message. No other text.`;
+You MUST respond with ONLY valid JSON matching the exact schema specified in the user message. Do NOT wrap it in markdown code blocks. Do NOT include any text before or after the JSON. Start your response with { and end with }.`;
 
 export interface PlanGenerationInput {
   objective: string;
@@ -50,7 +50,9 @@ ATHLETE PROFILE:
 - Preferences: ${input.preferences || "None"}
 - Plan start date: ${input.startDate}
 
-Respond with JSON in this exact format:
+IMPORTANT: Only generate workouts for the first 4 weeks in detail. For plans longer than 4 weeks, include only the first 4 weeks in the "weeks" array. Keep exercise descriptions concise (1-2 sentences). Keep the exercises array short (3-5 items max per workout).
+
+Respond with ONLY raw JSON (no markdown, no code blocks). Use this exact format:
 {
   "title": "string - descriptive plan title",
   "weeks": [
