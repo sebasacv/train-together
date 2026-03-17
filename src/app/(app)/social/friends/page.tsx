@@ -33,6 +33,7 @@ export default function FriendsPage() {
   const [inviteCode, setInviteCode] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<FriendProfile[]>([]);
+  const [suggestedPeople, setSuggestedPeople] = useState<FriendProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [addingFriend, setAddingFriend] = useState<string | null>(null);
 
@@ -98,6 +99,23 @@ export default function FriendsPage() {
       if (newCode) setInviteCode(newCode.code);
     }
 
+    // Fetch suggested people (not already friends or in pending requests)
+    const excludeIds = [
+      user.id,
+      ...friendIds,
+      ...(received ?? []).map((r: any) => r.from_user),
+      ...(sent ?? []).map((r: any) => r.to_user),
+    ];
+
+    const { data: suggested } = await supabase
+      .from("profiles")
+      .select("id, display_name, username, avatar_url, current_level, current_streak")
+      .not("id", "in", `(${excludeIds.join(",")})`)
+      .order("created_at", { ascending: false })
+      .limit(5);
+
+    setSuggestedPeople((suggested ?? []) as FriendProfile[]);
+
     setLoading(false);
   }
 
@@ -121,6 +139,22 @@ export default function FriendsPage() {
     if (error) {
       toast.error("Could not send request");
     } else {
+      // Get current user's display name for the notification
+      const { data: myProfile } = await supabase
+        .from("profiles")
+        .select("display_name")
+        .eq("id", user.id)
+        .single();
+      const myName = myProfile?.display_name || "Someone";
+
+      // Create notification for the recipient
+      await supabase.from("notifications").insert({
+        user_id: toUserId,
+        type: "friend_request",
+        title: `${myName} wants to train with you!`,
+        body: "Accept their request to start training together",
+      });
+
       toast.success("Friend request sent!");
       loadData();
     }
@@ -274,6 +308,45 @@ export default function FriendsPage() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Suggested People */}
+      {suggestedPeople.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-lg font-semibold">Suggested People</h2>
+          <div className="space-y-2">
+            {suggestedPeople.map((profile) => (
+              <div key={profile.id} className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-medium">
+                    {profile.display_name[0]}
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm">{profile.display_name}</p>
+                    <p className="text-xs text-slate-400">@{profile.username} · Lv.{profile.current_level}</p>
+                  </div>
+                </div>
+                {isFriend(profile.id) ? (
+                  <span className="text-xs text-emerald-400 flex items-center gap-1">
+                    <Check className="w-3 h-3" /> Friends
+                  </span>
+                ) : hasSentRequest(profile.id) ? (
+                  <span className="text-xs text-slate-400">Pending</span>
+                ) : (
+                  <Button
+                    size="sm"
+                    onClick={() => sendFriendRequest(profile.id)}
+                    disabled={addingFriend === profile.id}
+                    className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 h-8 text-xs"
+                  >
+                    {addingFriend === profile.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <UserPlus className="w-3 h-3 mr-1" />}
+                    Add
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

@@ -159,7 +159,7 @@ export async function POST(request: NextRequest) {
           | "max",
         is_key_workout: workout.is_key_workout,
         exercises: workout.exercises,
-        is_open_for_joining: false,
+        is_open_for_joining: true,
         visibility: "friends" as const,
       }));
 

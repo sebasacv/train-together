@@ -82,7 +82,7 @@ export default async function DashboardPage() {
       .from("workouts")
       .select("id, title, scheduled_date, user_id, profiles!workouts_user_id_fkey(display_name)")
       .in("user_id", friendIds)
-      .eq("is_open_for_joining", true)
+      .eq("status", "scheduled")
       .gte("scheduled_date", today)
       .lte("scheduled_date", threeDaysFromNow)
       .order("scheduled_date", { ascending: true })
@@ -304,10 +304,17 @@ export default async function DashboardPage() {
 
       {/* Who's Training Soon */}
       <div className="space-y-3">
-        <h2 className="text-lg font-semibold flex items-center gap-2">
-          <Users className="w-5 h-5 text-cyan-400" />
-          Who&apos;s Training Soon
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold flex items-center gap-2">
+            <Users className="w-5 h-5 text-cyan-400" />
+            Who&apos;s Training Soon
+          </h2>
+          {friendWorkouts.length > 0 && (
+            <Link href="/social/training-soon" className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+              See all <ArrowRight className="w-3 h-3" />
+            </Link>
+          )}
+        </div>
         {friendWorkouts.length > 0 ? (
           <div className="space-y-2">
             {friendWorkouts.map((workout) => {
