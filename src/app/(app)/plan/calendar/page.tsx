@@ -82,7 +82,7 @@ export default function PlanCalendarPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Calendar className="w-6 h-6 text-indigo-400" />
+          <Calendar className="w-6 h-6 text-pink-400" />
           Plan Calendar
         </h1>
         <div className="flex items-center gap-2">
@@ -140,12 +140,12 @@ export default function PlanCalendarPage() {
                     onClick={() => setSelectedDate(day)}
                     className={`p-2 min-h-[4.5rem] border-b border-r border-white/5 text-left transition-colors ${
                       !isCurrentMonth ? "opacity-30" : ""
-                    } ${isSelected ? "bg-indigo-500/10" : "hover:bg-white/5"}`}
+                    } ${isSelected ? "bg-pink-500/10" : "hover:bg-white/5"}`}
                   >
                     <span
                       className={`text-xs font-medium ${
                         isToday(day)
-                          ? "bg-indigo-500 text-white w-6 h-6 rounded-full flex items-center justify-center"
+                          ? "bg-pink-500 text-white w-6 h-6 rounded-full flex items-center justify-center"
                           : "text-slate-400"
                       }`}
                     >

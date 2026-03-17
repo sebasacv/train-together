@@ -34,12 +34,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { user } = useSupabase();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col">
+    <div className="min-h-screen bg-[#0d0b1a] text-white flex flex-col">
       {/* Top bar */}
-      <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-white/5">
+      <header className="sticky top-0 z-50 bg-[#0d0b1a]/80 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="p-1 bg-indigo-600 rounded-lg">
+            <div className="p-1 bg-gradient-to-r from-pink-500 to-orange-500 rounded-lg">
               <Dumbbell className="w-4 h-4 text-white" />
             </div>
             <span className="font-bold text-lg hidden sm:block">TrainTogether</span>
@@ -54,7 +54,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   "p-2 rounded-lg transition-colors",
                   pathname.startsWith(item.href)
                     ? "bg-white/10 text-white"
-                    : "text-slate-400 hover:text-white hover:bg-white/5"
+                    : "text-white/40 hover:text-white hover:bg-white/5"
                 )}
               >
                 <item.icon className="w-5 h-5" />
@@ -70,7 +70,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Bottom nav (mobile) */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-slate-950/90 backdrop-blur-xl border-t border-white/5 md:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0d0b1a]/90 backdrop-blur-xl border-t border-white/10 md:hidden">
         <div className="flex items-center justify-around h-16 px-2">
           {navItems.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -81,8 +81,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg transition-colors min-w-[3rem]",
                   isActive
-                    ? "text-indigo-400"
-                    : "text-slate-500"
+                    ? "text-pink-400"
+                    : "text-white/40"
                 )}
               >
                 <item.icon className="w-5 h-5" />

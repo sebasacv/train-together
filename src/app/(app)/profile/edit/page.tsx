@@ -104,7 +104,7 @@ export default function EditProfilePage() {
             type="text"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
         </div>
 
@@ -114,7 +114,7 @@ export default function EditProfilePage() {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
         </div>
 
@@ -124,7 +124,7 @@ export default function EditProfilePage() {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             rows={3}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
           />
         </div>
 
@@ -137,7 +137,7 @@ export default function EditProfilePage() {
                 onClick={() => setFitnessLevel(level)}
                 className={`py-2 rounded-xl border text-sm capitalize transition-colors ${
                   fitnessLevel === level
-                    ? "bg-indigo-500/20 border-indigo-500/30 text-indigo-300"
+                    ? "bg-pink-500/20 border-pink-500/30 text-pink-300"
                     : "bg-white/5 border-white/10 text-slate-400"
                 }`}
               >
@@ -156,7 +156,7 @@ export default function EditProfilePage() {
                 onClick={() => setTrainingDays(d)}
                 className={`flex-1 py-2 rounded-xl border text-center font-medium transition-colors ${
                   trainingDays === d
-                    ? "bg-indigo-500/20 border-indigo-500/30 text-indigo-300"
+                    ? "bg-pink-500/20 border-pink-500/30 text-pink-300"
                     : "bg-white/5 border-white/10 text-slate-400"
                 }`}
               >
@@ -180,7 +180,7 @@ export default function EditProfilePage() {
                   }}
                   className={`px-3 py-1.5 rounded-lg border text-xs transition-colors ${
                     selected
-                      ? "bg-indigo-500/20 border-indigo-500/30 text-indigo-300"
+                      ? "bg-pink-500/20 border-pink-500/30 text-pink-300"
                       : "bg-white/5 border-white/10 text-slate-400"
                   }`}
                 >
@@ -204,7 +204,7 @@ export default function EditProfilePage() {
                 onClick={() => setPrivacy(opt.value)}
                 className={`py-2 rounded-xl border text-sm transition-colors ${
                   privacy === opt.value
-                    ? "bg-indigo-500/20 border-indigo-500/30 text-indigo-300"
+                    ? "bg-pink-500/20 border-pink-500/30 text-pink-300"
                     : "bg-white/5 border-white/10 text-slate-400"
                 }`}
               >
@@ -218,7 +218,7 @@ export default function EditProfilePage() {
       <Button
         onClick={handleSave}
         disabled={saving}
-        className="w-full bg-indigo-600 hover:bg-indigo-700"
+        className="w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600"
       >
         {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
         Save Changes

@@ -57,16 +57,16 @@ export default async function ProfilePage() {
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       {/* Profile Header */}
-      <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-2xl p-6">
+      <div className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 border border-pink-500/20 rounded-2xl p-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center text-2xl font-bold text-indigo-300">
+          <div className="w-16 h-16 rounded-full bg-pink-500/20 flex items-center justify-center text-2xl font-bold text-pink-300">
             {profile.display_name[0]}
           </div>
           <div className="flex-1">
             <h1 className="text-xl font-bold">{profile.display_name}</h1>
             <p className="text-sm text-slate-400">@{profile.username}</p>
             <div className="flex items-center gap-2 mt-1">
-              <span className="px-2 py-0.5 bg-indigo-500/20 text-indigo-300 rounded-full text-xs">
+              <span className="px-2 py-0.5 bg-pink-500/20 text-pink-300 rounded-full text-xs">
                 Lv.{currentLevel}
               </span>
               <span className="text-xs text-slate-400 capitalize">{profile.fitness_level}</span>
@@ -87,7 +87,7 @@ export default async function ProfilePage() {
           </div>
           <div className="w-full bg-white/10 rounded-full h-2">
             <div
-              className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full"
+              className="bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-500 h-2 rounded-full"
               style={{ width: `${Math.min(levelProgress, 100)}%` }}
             />
           </div>
@@ -101,7 +101,7 @@ export default async function ProfilePage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-4 gap-3">
         <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
-          <Dumbbell className="w-4 h-4 text-indigo-400 mx-auto mb-1" />
+          <Dumbbell className="w-4 h-4 text-cyan-400 mx-auto mb-1" />
           <p className="text-xl font-bold">{workoutCount ?? 0}</p>
           <p className="text-[10px] text-slate-400">Workouts</p>
         </div>
@@ -136,7 +136,7 @@ export default async function ProfilePage() {
         <Link href="/social/leaderboard">
           <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-between hover:bg-white/[0.07] transition-colors">
             <div className="flex items-center gap-3">
-              <Zap className="w-5 h-5 text-indigo-400" />
+              <Zap className="w-5 h-5 text-cyan-400" />
               <span className="font-medium">Leaderboard</span>
             </div>
             <span className="text-sm text-slate-400">View rankings</span>

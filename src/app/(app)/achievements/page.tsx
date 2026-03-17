@@ -4,17 +4,17 @@ import { Award, Lock, CheckCircle2 } from "lucide-react";
 
 const RARITY_COLORS: Record<string, string> = {
   common: "border-slate-500/30 bg-slate-500/10",
-  uncommon: "border-green-500/30 bg-green-500/10",
-  rare: "border-blue-500/30 bg-blue-500/10",
-  epic: "border-purple-500/30 bg-purple-500/10",
-  legendary: "border-amber-500/30 bg-amber-500/10",
+  uncommon: "border-emerald-400/30 bg-emerald-400/10",
+  rare: "border-cyan-400/30 bg-cyan-400/10",
+  epic: "border-violet-400/30 bg-violet-400/10",
+  legendary: "border-amber-400/30 bg-gradient-to-br from-amber-500/10 to-yellow-300/10",
 };
 
 const RARITY_TEXT: Record<string, string> = {
   common: "text-slate-400",
-  uncommon: "text-green-400",
-  rare: "text-blue-400",
-  epic: "text-purple-400",
+  uncommon: "text-emerald-400",
+  rare: "text-cyan-400",
+  epic: "text-violet-400",
   legendary: "text-amber-400",
 };
 

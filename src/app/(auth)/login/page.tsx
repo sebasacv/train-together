@@ -41,7 +41,7 @@ export default function LoginPage() {
     <div className="space-y-8">
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="p-2 bg-indigo-600 rounded-xl">
+          <div className="p-2 bg-gradient-to-r from-pink-500 to-orange-500 rounded-xl">
             <Dumbbell className="w-8 h-8 text-white" />
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function LoginPage() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 required
               />
             </div>
@@ -95,7 +95,7 @@ export default function LoginPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 required
               />
             </div>
@@ -108,7 +108,7 @@ export default function LoginPage() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl"
+            className="w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white py-3 rounded-xl"
           >
             {loading ? "Signing in..." : "Sign in"}
             <ArrowRight className="w-4 h-4 ml-2" />
@@ -118,7 +118,7 @@ export default function LoginPage() {
 
       <p className="text-center text-slate-400 text-sm">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="text-indigo-400 hover:text-indigo-300 font-medium">
+        <Link href="/signup" className="text-pink-400 hover:text-pink-300 font-medium">
           Sign up
         </Link>
       </p>

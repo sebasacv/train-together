@@ -206,7 +206,7 @@ export function WorkoutActions({ workoutId, planId }: { workoutId: string; planI
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
               placeholder="e.g., 45"
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
           </div>
 
@@ -221,7 +221,7 @@ export function WorkoutActions({ workoutId, planId }: { workoutId: string; planI
               max={10}
               value={rpe}
               onChange={(e) => setRpe(Number(e.target.value))}
-              className="w-full accent-indigo-500"
+              className="w-full accent-pink-500"
             />
             <div className="flex justify-between text-[10px] text-slate-500">
               <span>Easy</span>
@@ -240,7 +240,7 @@ export function WorkoutActions({ workoutId, planId }: { workoutId: string; planI
                   onClick={() => setMood(m.value)}
                   className={`flex-1 py-2 rounded-lg border text-center transition-colors ${
                     mood === m.value
-                      ? "bg-indigo-500/20 border-indigo-500/30"
+                      ? "bg-pink-500/20 border-pink-500/30"
                       : "bg-white/5 border-white/10"
                   }`}
                 >
@@ -259,7 +259,7 @@ export function WorkoutActions({ workoutId, planId }: { workoutId: string; planI
               onChange={(e) => setNotes(e.target.value)}
               placeholder="How did it go?"
               rows={2}
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
             />
           </div>
 
@@ -306,7 +306,7 @@ export function WorkoutActions({ workoutId, planId }: { workoutId: string; planI
                 onClick={() => setFeedbackType(opt.type)}
                 className={`p-2 rounded-lg border text-center transition-colors ${
                   feedbackType === opt.type
-                    ? "bg-indigo-500/20 border-indigo-500/30"
+                    ? "bg-pink-500/20 border-pink-500/30"
                     : "bg-white/5 border-white/10"
                 }`}
               >
@@ -320,12 +320,12 @@ export function WorkoutActions({ workoutId, planId }: { workoutId: string; planI
             onChange={(e) => setFeedbackDetails(e.target.value)}
             placeholder="Any details? (optional)"
             rows={2}
-            className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+            className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
           />
           <Button
             onClick={submitFeedback}
             disabled={!feedbackType || loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700"
+            className="w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600"
             size="sm"
           >
             Submit Feedback

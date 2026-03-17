@@ -114,10 +114,10 @@ export default function GeneratePlanPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
         <div className="relative">
-          <div className="w-20 h-20 rounded-full bg-indigo-500/20 flex items-center justify-center">
-            <Brain className="w-10 h-10 text-indigo-400 animate-pulse" />
+          <div className="w-20 h-20 rounded-full bg-pink-500/20 flex items-center justify-center">
+            <Brain className="w-10 h-10 text-pink-400 animate-pulse" />
           </div>
-          <Loader2 className="w-24 h-24 text-indigo-500 animate-spin absolute -top-2 -left-2" />
+          <Loader2 className="w-24 h-24 text-pink-500 animate-spin absolute -top-2 -left-2" />
         </div>
         <div className="text-center space-y-2">
           <h2 className="text-xl font-bold">Building your training plan...</h2>
@@ -142,7 +142,7 @@ export default function GeneratePlanPage() {
           <div
             key={s}
             className={`flex-1 h-1.5 rounded-full transition-colors ${
-              i <= currentStepIndex ? "bg-indigo-500" : "bg-white/10"
+              i <= currentStepIndex ? "bg-pink-500" : "bg-white/10"
             }`}
           />
         ))}
@@ -152,7 +152,7 @@ export default function GeneratePlanPage() {
       {step === "objective" && (
         <div className="space-y-4">
           <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Target className="w-5 h-5 text-indigo-400" />
+            <Target className="w-5 h-5 text-pink-400" />
             What&apos;s your training goal?
           </h2>
           <div className="grid gap-3">
@@ -162,7 +162,7 @@ export default function GeneratePlanPage() {
                 onClick={() => setObjective(obj.value)}
                 className={`w-full text-left p-4 rounded-xl border transition-colors ${
                   objective === obj.value
-                    ? "bg-indigo-500/10 border-indigo-500/30 text-white"
+                    ? "bg-pink-500/10 border-pink-500/30 text-white"
                     : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/[0.07]"
                 }`}
               >
@@ -182,7 +182,7 @@ export default function GeneratePlanPage() {
               placeholder="Describe your goal..."
               value={customObjective}
               onChange={(e) => setCustomObjective(e.target.value)}
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
           )}
         </div>
@@ -191,7 +191,7 @@ export default function GeneratePlanPage() {
       {step === "timeline" && (
         <div className="space-y-6">
           <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-indigo-400" />
+            <Calendar className="w-5 h-5 text-pink-400" />
             Plan Timeline
           </h2>
           <div className="space-y-4">
@@ -204,7 +204,7 @@ export default function GeneratePlanPage() {
                   max={52}
                   value={durationWeeks}
                   onChange={(e) => setDurationWeeks(Number(e.target.value))}
-                  className="flex-1 accent-indigo-500"
+                  className="flex-1 accent-pink-500"
                 />
                 <span className="text-xl font-bold w-16 text-right">{durationWeeks}w</span>
               </div>
@@ -218,7 +218,7 @@ export default function GeneratePlanPage() {
                 type="date"
                 value={targetDate}
                 onChange={(e) => setTargetDate(e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
             </div>
             <div>
@@ -230,7 +230,7 @@ export default function GeneratePlanPage() {
                     onClick={() => setTrainingDays(d)}
                     className={`flex-1 py-3 rounded-xl border text-center font-medium transition-colors ${
                       trainingDays === d
-                        ? "bg-indigo-500/20 border-indigo-500/30 text-indigo-300"
+                        ? "bg-pink-500/20 border-pink-500/30 text-pink-300"
                         : "bg-white/5 border-white/10 text-slate-400 hover:bg-white/[0.07]"
                     }`}
                   >
@@ -246,7 +246,7 @@ export default function GeneratePlanPage() {
       {step === "fitness" && (
         <div className="space-y-4">
           <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Gauge className="w-5 h-5 text-indigo-400" />
+            <Gauge className="w-5 h-5 text-pink-400" />
             Current Fitness Level
           </h2>
           <div className="grid gap-3">
@@ -256,7 +256,7 @@ export default function GeneratePlanPage() {
                 onClick={() => setFitnessLevel(level.value)}
                 className={`w-full text-left p-4 rounded-xl border transition-colors ${
                   fitnessLevel === level.value
-                    ? "bg-indigo-500/10 border-indigo-500/30"
+                    ? "bg-pink-500/10 border-pink-500/30"
                     : "bg-white/5 border-white/10 hover:bg-white/[0.07]"
                 }`}
               >
@@ -271,7 +271,7 @@ export default function GeneratePlanPage() {
       {step === "equipment" && (
         <div className="space-y-4">
           <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Wrench className="w-5 h-5 text-indigo-400" />
+            <Wrench className="w-5 h-5 text-pink-400" />
             Available Equipment
           </h2>
           <p className="text-sm text-slate-400">Select all that apply</p>
@@ -290,12 +290,12 @@ export default function GeneratePlanPage() {
                   }}
                   className={`p-3 rounded-xl border text-left transition-colors ${
                     selected
-                      ? "bg-indigo-500/10 border-indigo-500/30"
+                      ? "bg-pink-500/10 border-pink-500/30"
                       : "bg-white/5 border-white/10 hover:bg-white/[0.07]"
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    {selected && <CheckCircle2 className="w-4 h-4 text-indigo-400" />}
+                    {selected && <CheckCircle2 className="w-4 h-4 text-pink-400" />}
                     <span className="text-sm font-medium">{eq.label}</span>
                   </div>
                 </button>
@@ -308,7 +308,7 @@ export default function GeneratePlanPage() {
       {step === "preferences" && (
         <div className="space-y-4">
           <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Dumbbell className="w-5 h-5 text-indigo-400" />
+            <Dumbbell className="w-5 h-5 text-pink-400" />
             Additional Info (optional)
           </h2>
           <div className="space-y-4">
@@ -319,7 +319,7 @@ export default function GeneratePlanPage() {
                 placeholder="e.g., 5 hours/week, 30km running/week"
                 value={currentVolume}
                 onChange={(e) => setCurrentVolume(e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
             </div>
             <div>
@@ -329,7 +329,7 @@ export default function GeneratePlanPage() {
                 value={injuries}
                 onChange={(e) => setInjuries(e.target.value)}
                 rows={3}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
               />
             </div>
             <div>
@@ -339,7 +339,7 @@ export default function GeneratePlanPage() {
                 value={preferences}
                 onChange={(e) => setPreferences(e.target.value)}
                 rows={3}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
               />
             </div>
           </div>
@@ -370,7 +370,7 @@ export default function GeneratePlanPage() {
           <Button
             onClick={() => setStep(steps[currentStepIndex + 1])}
             disabled={step === "objective" && !objective}
-            className="bg-indigo-600 hover:bg-indigo-700"
+            className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600"
           >
             Next
             <ArrowRight className="w-4 h-4 ml-2" />
@@ -378,7 +378,7 @@ export default function GeneratePlanPage() {
         ) : (
           <Button
             onClick={handleGenerate}
-            className="bg-indigo-600 hover:bg-indigo-700"
+            className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600"
           >
             <Brain className="w-4 h-4 mr-2" />
             Generate Plan

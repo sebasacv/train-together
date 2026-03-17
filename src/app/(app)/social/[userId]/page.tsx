@@ -66,14 +66,14 @@ export default async function FriendProfilePage({
       {/* Profile Header */}
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center text-2xl font-bold text-indigo-300">
+          <div className="w-16 h-16 rounded-full bg-pink-500/20 flex items-center justify-center text-2xl font-bold text-pink-300">
             {profile.display_name[0]}
           </div>
           <div>
             <h1 className="text-xl font-bold">{profile.display_name}</h1>
             <p className="text-sm text-slate-400">@{profile.username}</p>
             <div className="flex items-center gap-2 mt-1">
-              <span className="px-2 py-0.5 bg-indigo-500/20 text-indigo-300 rounded-full text-xs">
+              <span className="px-2 py-0.5 bg-pink-500/20 text-pink-300 rounded-full text-xs">
                 Lv.{profile.current_level}
               </span>
               <span className="text-xs text-slate-400 capitalize">{profile.fitness_level}</span>
@@ -88,7 +88,7 @@ export default async function FriendProfilePage({
       {/* Stats */}
       <div className="grid grid-cols-4 gap-3">
         <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
-          <Dumbbell className="w-4 h-4 text-indigo-400 mx-auto mb-1" />
+          <Dumbbell className="w-4 h-4 text-cyan-400 mx-auto mb-1" />
           <p className="text-xl font-bold">{workoutCount ?? 0}</p>
           <p className="text-[10px] text-slate-400">Workouts</p>
         </div>
@@ -98,7 +98,7 @@ export default async function FriendProfilePage({
           <p className="text-[10px] text-slate-400">Streak</p>
         </div>
         <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
-          <Zap className="w-4 h-4 text-indigo-400 mx-auto mb-1" />
+          <Zap className="w-4 h-4 text-cyan-400 mx-auto mb-1" />
           <p className="text-xl font-bold">{profile.xp_total.toLocaleString()}</p>
           <p className="text-[10px] text-slate-400">XP</p>
         </div>

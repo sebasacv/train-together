@@ -19,7 +19,7 @@ const ACTIVITY_ICONS: Record<string, React.ReactNode> = {
   workout_completed: <CheckCircle2 className="w-4 h-4 text-emerald-400" />,
   achievement_unlocked: <Award className="w-4 h-4 text-amber-400" />,
   streak_milestone: <Flame className="w-4 h-4 text-orange-400" />,
-  plan_started: <Dumbbell className="w-4 h-4 text-indigo-400" />,
+  plan_started: <Dumbbell className="w-4 h-4 text-cyan-400" />,
   joined_workout: <Users className="w-4 h-4 text-blue-400" />,
   level_up: <TrendingUp className="w-4 h-4 text-purple-400" />,
 };
@@ -74,7 +74,7 @@ export default async function SocialPage() {
             </Button>
           </Link>
           <Link href="/social/friends">
-            <Button className="bg-indigo-600 hover:bg-indigo-700">
+            <Button className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600">
               <UserPlus className="w-4 h-4 mr-2" />
               Friends
             </Button>
@@ -99,7 +99,7 @@ export default async function SocialPage() {
                   <span className="text-sm">{profile?.display_name}</span>
                 </div>
                 <Link href="/social/friends">
-                  <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 h-7 text-xs">
+                  <Button size="sm" className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 h-7 text-xs">
                     View
                   </Button>
                 </Link>
@@ -112,7 +112,7 @@ export default async function SocialPage() {
       {/* Stats Row */}
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
-          <Users className="w-5 h-5 text-indigo-400 mx-auto mb-1" />
+          <Users className="w-5 h-5 text-cyan-400 mx-auto mb-1" />
           <p className="text-2xl font-bold">{friendCount}</p>
           <p className="text-xs text-slate-400">Friends</p>
         </div>
@@ -139,7 +139,7 @@ export default async function SocialPage() {
               </p>
             </div>
             <Link href="/social/friends">
-              <Button className="bg-indigo-600 hover:bg-indigo-700 mt-2">
+              <Button className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 mt-2">
                 <UserPlus className="w-4 h-4 mr-2" />
                 Find Friends
               </Button>
@@ -164,7 +164,7 @@ export default async function SocialPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-2 mt-1">
-                        {ACTIVITY_ICONS[activity.activity_type] || <Zap className="w-4 h-4 text-indigo-400" />}
+                        {ACTIVITY_ICONS[activity.activity_type] || <Zap className="w-4 h-4 text-cyan-400" />}
                         <p className="text-sm text-slate-300">{activity.title}</p>
                       </div>
                       {activity.description && (

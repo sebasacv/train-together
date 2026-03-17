@@ -140,12 +140,12 @@ export default function ConversationPage() {
               <div
                 className={`max-w-[75%] rounded-2xl px-4 py-2 ${
                   isOwn
-                    ? "bg-indigo-600 text-white"
+                    ? "bg-gradient-to-r from-pink-500 to-orange-500 text-white"
                     : "bg-white/10 text-white"
                 }`}
               >
                 <p className="text-sm">{msg.content}</p>
-                <p className={`text-[10px] mt-1 ${isOwn ? "text-indigo-200" : "text-slate-400"}`}>
+                <p className={`text-[10px] mt-1 ${isOwn ? "text-pink-200" : "text-slate-400"}`}>
                   {formatMessageTime(msg.created_at)}
                 </p>
               </div>
@@ -169,12 +169,12 @@ export default function ConversationPage() {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="flex-1 px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
           <Button
             type="submit"
             disabled={!newMessage.trim() || sending}
-            className="bg-indigo-600 hover:bg-indigo-700"
+            className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600"
           >
             <Send className="w-4 h-4" />
           </Button>

@@ -195,7 +195,7 @@ export default function CalendarPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <CalendarIcon className="w-6 h-6 text-indigo-400" />
+          <CalendarIcon className="w-6 h-6 text-pink-400" />
           Training Calendar
         </h1>
         <div className="flex items-center gap-2">
@@ -233,7 +233,7 @@ export default function CalendarPage() {
       {/* Legend */}
       <div className="flex items-center gap-4 text-xs text-slate-400">
         <span className="flex items-center gap-1">
-          <div className="w-3 h-3 rounded bg-indigo-500/30 border border-indigo-500/50" />
+          <div className="w-3 h-3 rounded bg-pink-500/30 border border-pink-500/50" />
           Your workouts
         </span>
         <span className="flex items-center gap-1">
@@ -261,19 +261,19 @@ export default function CalendarPage() {
                 key={day.toISOString()}
                 className={`rounded-xl border p-4 ${
                   isToday(day)
-                    ? "bg-indigo-500/5 border-indigo-500/20"
+                    ? "bg-pink-500/5 border-pink-500/20"
                     : "bg-white/5 border-white/10"
                 }`}
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <span className={`text-sm font-medium ${isToday(day) ? "text-indigo-400" : "text-slate-400"}`}>
+                  <span className={`text-sm font-medium ${isToday(day) ? "text-pink-400" : "text-slate-400"}`}>
                     {format(day, "EEE")}
                   </span>
-                  <span className={`text-lg font-bold ${isToday(day) ? "text-indigo-300" : ""}`}>
+                  <span className={`text-lg font-bold ${isToday(day) ? "text-pink-300" : ""}`}>
                     {format(day, "d")}
                   </span>
                   {isToday(day) && (
-                    <span className="text-[10px] px-1.5 py-0.5 bg-indigo-500/20 text-indigo-300 rounded-full">Today</span>
+                    <span className="text-[10px] px-1.5 py-0.5 bg-pink-500/20 text-pink-300 rounded-full">Today</span>
                   )}
                 </div>
 

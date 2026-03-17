@@ -91,21 +91,21 @@ export default async function DashboardPage() {
 
       {/* Quick Stats Row */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+        <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
             <Flame className={`w-5 h-5 ${streak > 0 ? "text-orange-400" : "text-slate-500"}`} />
           </div>
           <p className="text-2xl font-bold">{streak}</p>
           <p className="text-xs text-slate-400">Day Streak</p>
         </div>
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+        <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-xl p-4 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
-            <Zap className="w-5 h-5 text-indigo-400" />
+            <Zap className="w-5 h-5 text-cyan-400" />
           </div>
           <p className="text-2xl font-bold">{xpTotal.toLocaleString()}</p>
           <p className="text-xs text-slate-400">Total XP</p>
         </div>
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
             <Trophy className="w-5 h-5 text-amber-400" />
           </div>
@@ -122,7 +122,7 @@ export default async function DashboardPage() {
         </div>
         <div className="w-full bg-white/10 rounded-full h-2">
           <div
-            className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all"
+            className="bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-500 h-2 rounded-full transition-all"
             style={{ width: `${Math.min(levelProgress, 100)}%` }}
           />
         </div>
@@ -132,12 +132,12 @@ export default async function DashboardPage() {
       {todaysWorkouts && todaysWorkouts.length > 0 ? (
         <div className="space-y-3">
           <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-indigo-400" />
+            <Calendar className="w-5 h-5 text-pink-400" />
             Today&apos;s Training
           </h2>
           {todaysWorkouts.map((workout) => (
             <Link key={workout.id} href={`/plan/${workout.id}`}>
-              <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-xl p-5 hover:from-indigo-500/15 hover:to-purple-500/15 transition-colors">
+              <div className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 border border-pink-500/20 rounded-xl p-5 hover:from-pink-500/15 hover:via-purple-500/15 hover:to-cyan-500/15 transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-semibold text-lg">{workout.title}</p>
@@ -193,8 +193,8 @@ export default async function DashboardPage() {
 
       {/* No Plan CTA */}
       {!activePlan && (
-        <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-2xl p-8 text-center space-y-4">
-          <Dumbbell className="w-12 h-12 text-indigo-400 mx-auto" />
+        <div className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 border border-pink-500/20 rounded-2xl p-8 text-center space-y-4">
+          <Dumbbell className="w-12 h-12 text-pink-400 mx-auto" />
           <div>
             <h2 className="text-xl font-bold">Ready to start training?</h2>
             <p className="text-slate-400 mt-2">
@@ -202,7 +202,7 @@ export default async function DashboardPage() {
             </p>
           </div>
           <Link href="/plan/generate">
-            <Button className="bg-indigo-600 hover:bg-indigo-700 mt-2">
+            <Button className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 mt-2">
               <Plus className="w-4 h-4 mr-2" />
               Generate Training Plan
             </Button>
@@ -217,8 +217,8 @@ export default async function DashboardPage() {
           <div className="space-y-2">
             {recentActivity.map((activity) => (
               <div key={activity.id} className="bg-white/5 border border-white/10 rounded-lg p-3 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-indigo-400" />
+                <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-cyan-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">{activity.title}</p>

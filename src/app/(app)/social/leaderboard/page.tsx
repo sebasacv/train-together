@@ -63,15 +63,15 @@ export default async function LeaderboardPage() {
       </div>
 
       {/* Your Position */}
-      <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-4 flex items-center justify-between">
+      <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-xl p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="text-2xl font-bold text-indigo-400">#{userRank}</span>
+          <span className="text-2xl font-bold text-cyan-400">#{userRank}</span>
           <div>
             <p className="font-medium">Your Position</p>
             <p className="text-sm text-slate-400">{xpByUser.get(user.id) ?? 0} XP this week</p>
           </div>
         </div>
-        <TrendingUp className="w-5 h-5 text-indigo-400" />
+        <TrendingUp className="w-5 h-5 text-cyan-400" />
       </div>
 
       {/* Leaderboard */}
@@ -84,7 +84,7 @@ export default async function LeaderboardPage() {
               key={entry.id}
               className={`rounded-xl p-4 flex items-center gap-4 border transition-colors ${
                 isUser
-                  ? "bg-indigo-500/10 border-indigo-500/20"
+                  ? "bg-cyan-500/10 border-cyan-500/20"
                   : "bg-white/5 border-white/10"
               }`}
             >

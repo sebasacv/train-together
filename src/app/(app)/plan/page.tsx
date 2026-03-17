@@ -54,7 +54,7 @@ export default async function PlanPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Training Plan</h1>
         <Link href="/plan/generate">
-          <Button className="bg-indigo-600 hover:bg-indigo-700">
+          <Button className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600">
             <Plus className="w-4 h-4 mr-2" />
             New Plan
           </Button>
@@ -64,10 +64,10 @@ export default async function PlanPage() {
       {activePlan ? (
         <div className="space-y-6">
           {/* Active Plan Card */}
-          <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-2xl p-6 space-y-4">
+          <div className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 border border-pink-500/20 rounded-2xl p-6 space-y-4">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-indigo-400 uppercase tracking-wider font-medium">Active Plan</p>
+                <p className="text-xs text-pink-400 uppercase tracking-wider font-medium">Active Plan</p>
                 <h2 className="text-xl font-bold mt-1">{activePlan.title}</h2>
               </div>
               <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-medium">
@@ -103,7 +103,7 @@ export default async function PlanPage() {
             <div>
               <div className="w-full bg-white/10 rounded-full h-2">
                 <div
-                  className="bg-gradient-to-r from-indigo-500 to-emerald-500 h-2 rounded-full transition-all"
+                  className="bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 h-2 rounded-full transition-all"
                   style={{ width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }}
                 />
               </div>
@@ -130,8 +130,8 @@ export default async function PlanPage() {
                 <Link key={workout.id} href={`/plan/${workout.id}`}>
                   <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/[0.07] transition-colors flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center">
-                        <Dumbbell className="w-5 h-5 text-indigo-400" />
+                      <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
+                        <Dumbbell className="w-5 h-5 text-pink-400" />
                       </div>
                       <div>
                         <p className="font-medium">{workout.title}</p>
@@ -162,7 +162,7 @@ export default async function PlanPage() {
             </p>
           </div>
           <Link href="/plan/generate">
-            <Button className="bg-indigo-600 hover:bg-indigo-700 mt-2">
+            <Button className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 mt-2">
               <Plus className="w-4 h-4 mr-2" />
               Generate Training Plan
             </Button>

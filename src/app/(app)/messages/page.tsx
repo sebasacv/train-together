@@ -92,7 +92,7 @@ export default function MessagesPage() {
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold flex items-center gap-2">
-        <MessageCircle className="w-6 h-6 text-indigo-400" />
+        <MessageCircle className="w-6 h-6 text-pink-400" />
         Messages
       </h1>
 

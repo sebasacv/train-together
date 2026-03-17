@@ -132,7 +132,7 @@ export default async function WorkoutDetailPage({
       {exercises.length > 0 && (
         <div className="space-y-3">
           <h3 className="font-semibold flex items-center gap-2">
-            <Dumbbell className="w-4 h-4 text-indigo-400" />
+            <Dumbbell className="w-4 h-4 text-violet-400" />
             Exercises
           </h3>
           <div className="space-y-2">

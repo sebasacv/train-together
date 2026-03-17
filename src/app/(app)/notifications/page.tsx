@@ -22,9 +22,9 @@ import { formatDistanceToNow } from "date-fns";
 const NOTIFICATION_ICONS: Record<string, React.ReactNode> = {
   friend_request: <UserPlus className="w-4 h-4 text-blue-400" />,
   friend_accepted: <Users className="w-4 h-4 text-emerald-400" />,
-  workout_join_request: <Users className="w-4 h-4 text-indigo-400" />,
+  workout_join_request: <Users className="w-4 h-4 text-pink-400" />,
   workout_join_confirmed: <CheckCircle2 className="w-4 h-4 text-emerald-400" />,
-  workout_reminder: <Dumbbell className="w-4 h-4 text-indigo-400" />,
+  workout_reminder: <Dumbbell className="w-4 h-4 text-pink-400" />,
   friend_completed_workout: <Dumbbell className="w-4 h-4 text-emerald-400" />,
   achievement_unlocked: <Award className="w-4 h-4 text-amber-400" />,
   streak_at_risk: <Flame className="w-4 h-4 text-orange-400" />,
@@ -72,7 +72,7 @@ export default function NotificationsPage() {
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold flex items-center gap-2">
-        <Bell className="w-6 h-6 text-indigo-400" />
+        <Bell className="w-6 h-6 text-pink-400" />
         Notifications
       </h1>
 
@@ -89,7 +89,7 @@ export default function NotificationsPage() {
               className={`rounded-xl border p-4 flex items-start gap-3 ${
                 notification.read
                   ? "bg-white/5 border-white/10"
-                  : "bg-indigo-500/5 border-indigo-500/20"
+                  : "bg-pink-500/5 border-pink-500/20"
               }`}
             >
               <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
@@ -105,7 +105,7 @@ export default function NotificationsPage() {
                 </p>
               </div>
               {!notification.read && (
-                <div className="w-2 h-2 rounded-full bg-indigo-400 shrink-0 mt-2" />
+                <div className="w-2 h-2 rounded-full bg-pink-400 shrink-0 mt-2" />
               )}
             </div>
           ))}

@@ -167,16 +167,16 @@ export default function FriendsPage() {
       <h1 className="text-2xl font-bold">Friends</h1>
 
       {/* Invite Link */}
-      <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-4 space-y-3">
+      <div className="bg-pink-500/10 border border-pink-500/20 rounded-xl p-4 space-y-3">
         <div className="flex items-center gap-2">
-          <Link2 className="w-4 h-4 text-indigo-400" />
+          <Link2 className="w-4 h-4 text-pink-400" />
           <h3 className="font-medium text-sm">Invite Friends</h3>
         </div>
         <div className="flex gap-2">
           <div className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-slate-400 truncate">
             {typeof window !== "undefined" ? `${window.location.origin}/signup?invite=${inviteCode}` : `...?invite=${inviteCode}`}
           </div>
-          <Button size="sm" onClick={copyInviteLink} className="bg-indigo-600 hover:bg-indigo-700">
+          <Button size="sm" onClick={copyInviteLink} className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600">
             <Copy className="w-4 h-4" />
           </Button>
         </div>
@@ -193,10 +193,10 @@ export default function FriendsPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && searchUsers()}
-              className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
           </div>
-          <Button onClick={searchUsers} className="bg-indigo-600 hover:bg-indigo-700">
+          <Button onClick={searchUsers} className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600">
             Search
           </Button>
         </div>
@@ -225,7 +225,7 @@ export default function FriendsPage() {
                     size="sm"
                     onClick={() => sendFriendRequest(profile.id)}
                     disabled={addingFriend === profile.id}
-                    className="bg-indigo-600 hover:bg-indigo-700 h-8 text-xs"
+                    className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 h-8 text-xs"
                   >
                     {addingFriend === profile.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <UserPlus className="w-3 h-3 mr-1" />}
                     Add

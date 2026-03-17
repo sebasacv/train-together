@@ -6,11 +6,11 @@ import Link from "next/link";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#0d0b1a] via-[#1a0d2e] to-[#0d0b1a] text-white">
       {/* Header */}
       <header className="container mx-auto px-4 py-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-indigo-600 rounded-lg">
+          <div className="p-1.5 bg-gradient-to-r from-pink-500 to-orange-500 rounded-lg">
             <Dumbbell className="w-5 h-5 text-white" />
           </div>
           <span className="text-xl font-bold">TrainTogether</span>
@@ -22,7 +22,7 @@ export default function LandingPage() {
             </Button>
           </Link>
           <Link href="/signup">
-            <Button className="bg-indigo-600 hover:bg-indigo-700">
+            <Button className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600">
               Get Started
             </Button>
           </Link>
@@ -32,14 +32,14 @@ export default function LandingPage() {
       {/* Hero */}
       <main className="container mx-auto px-4 pt-20 pb-32">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 text-sm text-indigo-300">
+          <div className="inline-flex items-center gap-2 bg-pink-500/10 border border-pink-500/20 rounded-full px-4 py-1.5 text-sm text-pink-300">
             <Zap className="w-3.5 h-3.5" />
             Powered by AI
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
             Train smarter,{" "}
-            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-pink-400 via-yellow-300 to-cyan-400 bg-clip-text text-transparent">
               together
             </span>
           </h1>
@@ -51,7 +51,7 @@ export default function LandingPage() {
 
           <div className="flex items-center justify-center gap-4">
             <Link href="/signup">
-              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-lg px-8 py-6">
+              <Button size="lg" className="bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-lg px-8 py-6">
                 Start Training Free
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
@@ -98,7 +98,7 @@ export default function LandingPage() {
 
           <div className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 space-y-4">
             <div className="flex items-center gap-3 pb-4 border-b border-white/10">
-              <Calendar className="w-5 h-5 text-indigo-400" />
+              <Calendar className="w-5 h-5 text-cyan-400" />
               <span className="font-medium">Social Training Calendar</span>
             </div>
             {[
@@ -128,7 +128,7 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-8">
+      <footer className="border-t border-white/10 py-8">
         <div className="container mx-auto px-4 text-center text-slate-500 text-sm">
           TrainTogether — Built with AI, designed for community.
         </div>
@@ -149,10 +149,10 @@ function FeatureCard({
   color: string;
 }) {
   const colorClasses: Record<string, string> = {
-    indigo: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
-    amber: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-    emerald: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-    purple: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+    indigo: "bg-pink-500/10 text-pink-400 border-pink-500/20",
+    amber: "bg-orange-500/10 text-orange-400 border-orange-500/20",
+    emerald: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
+    purple: "bg-violet-500/10 text-violet-400 border-violet-500/20",
   };
 
   return (
